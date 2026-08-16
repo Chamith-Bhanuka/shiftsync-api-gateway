@@ -1,3 +1,35 @@
+server:
+  port: 8080
 spring:
   application:
     name: api-gateway
+  config:
+    import: "optional:configserver:http://localhost:8888"
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: scheduling-service
+          uri: lb://scheduling-service
+          predicates:
+            - Path=/api/scheduling/**
+          filters:
+            - StripPrefix=1
+        - id: notification-service
+          uri: lb://notification-service
+          predicates:
+            - Path=/api/notifications/**
+          filters:
+            - StripPrefix=1
+        - id: credential-service
+          uri: lb://credential-service
+          predicates:
+            - Path=/api/credentials/**
+          filters:
+            - StripPrefix=1
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
