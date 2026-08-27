@@ -34,6 +34,10 @@ spring:
                 - Path=/api/credentials/**
               filters:
                 - StripPrefix=2
+            - id: notification-ws
+              uri: lb://NOTIFICATION-SERVICE
+              predicates:
+                - Path=/ws/**
       mvc:
         routes:
           - id: scheduling-service
@@ -54,6 +58,10 @@ spring:
               - Path=/api/credentials/**
             filters:
               - StripPrefix=2
+          - id: notification-ws
+            uri: lb://NOTIFICATION-SERVICE
+            predicates:
+              - Path=/ws/**
       routes:
         - id: scheduling-service
           uri: lb://SCHEDULING-SERVICE
@@ -73,6 +81,10 @@ spring:
             - Path=/api/credentials/**
           filters:
             - StripPrefix=2
+        - id: notification-ws
+          uri: lb://NOTIFICATION-SERVICE
+          predicates:
+            - Path=/ws/**
 
 eureka:
   instance:
